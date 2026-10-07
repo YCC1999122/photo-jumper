@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photo Jumper · 照片跳跳乐</title>
+  <meta name="description" content="上传照片，AI 识别物体自动生成 3D 跳跃关卡" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css?v=1.0" />
+  <!-- TensorFlow.js + COCO-SSD 目标检测模型 -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js"></script>
+  <!-- Three.js ES Module Import Map -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <!-- ====== 上传屏 ====== -->
+  <div id="uploadScreen" class="screen screen-upload">
+    <div class="upload-bg-orb orb-a"></div>
+    <div class="upload-bg-orb orb-b"></div>
+    <div class="upload-card">
+      <div class="upload-badge">PHOTO · JUMPER</div>
+      <h1 class="upload-title">照片<span class="grad-text">跳跳乐</span></h1>
+      <p class="upload-desc">上传一张照片，AI 自动识别画面里的物体，<br>把它们变成 3D 跳跃关卡的平台。<br>控制小人跳上平台，拿到顶部的星星。</p>
+      <div class="upload-area" id="uploadArea">
+        <svg class="upload-icon" viewBox="0 0 48 48" fill="none">
+          <rect x="6" y="6" width="36" height="36" rx="8" stroke="currentColor" stroke-width="2"/>
+          <circle cx="18" cy="20" r="4" stroke="currentColor" stroke-width="2"/>
+          <path d="M6 34l10-8 8 6 8-10 10 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <p class="upload-hint">拖拽照片到这里 · 或点击选择</p>
+        <p class="upload-formats">JPG / PNG / WEBP · 视频支持即将上线</p>
+        <input type="file" id="fileInput" accept="image/*" hidden />
+      </div>
+      <button id="demoBtn" class="btn btn-ghost">没有照片？用随机关卡试玩</button>
+    </div>
+  </div>
+
+  <!-- ====== 加载屏 ====== -->
+  <div id="loadingScreen" class="screen screen-loading hidden">
+    <div class="loading-card">
+      <div class="loading-ring"></div>
+      <p id="loadingText" class="loading-text">正在加载 AI 模型...</p>
+      <p class="loading-sub">首次加载约 10 秒，模型缓存后下次秒开</p>
+    </div>
+  </div>
+
+  <!-- ====== 游戏屏 ====== -->
+  <div id="gameScreen" class="screen screen-game hidden">
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- HUD 顶部 -->
+    <div class="hud hud-top">
+      <div class="hud-pill">
+        <span class="hud-label">TIME</span>
+        <span id="timer" class="hud-value">00:00</span>
+      </div>
+      <div class="hud-pill">
+        <span class="hud-label">PLATFORMS</span>
+        <span id="platformCount" class="hud-value">0</span>
+      </div>
+      <button id="resetBtn" class="btn btn-ghost btn-sm">重置位置</button>
+    </div>
+
+    <!-- HUD 底部 -->
+    <div class="hud hud-bottom">
+      <div class="hud-controls">
+        <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>
+        <span>移动</span>
+        <kbd class="kbd-wide">Space</kbd>
+        <span>跳跃</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== 胜利屏 ====== -->
+  <div id="winScreen" class="screen screen-win hidden">
+    <div class="confetti" id="confetti"></div>
+    <div class="win-card">
+      <div class="win-star">★</div>
+      <h2 class="win-title">获得星星!</h2>
+      <p class="win-time">用时 <span id="winTime">--</span></p>
+      <div class="win-buttons">
+        <button id="playAgainBtn" class="btn btn-primary">再玩一次</button>
+        <button id="newPhotoBtn" class="btn btn-ghost">换张照片</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast hidden"></div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
