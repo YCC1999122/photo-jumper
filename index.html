@@ -8,19 +8,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=1.0" />
+  <link rel="stylesheet" href="css/style.css?v=3.0" />
   <!-- TensorFlow.js + COCO-SSD 目标检测模型 -->
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js"></script>
-  <!-- Three.js ES Module Import Map -->
-  <script type="importmap">
-  {
-    "imports": {
-      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-    }
-  }
-  </script>
+  <!-- Three.js UMD build (r149 supports global THREE, works on file:// and http://) -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
 </head>
 <body>
 
@@ -31,7 +24,7 @@
     <div class="upload-card">
       <div class="upload-badge">PHOTO · JUMPER</div>
       <h1 class="upload-title">照片<span class="grad-text">跳跳乐</span></h1>
-      <p class="upload-desc">上传一张照片，AI 自动识别画面里的物体，<br>把它们变成 3D 跳跃关卡的平台。<br>控制小人跳上平台，拿到顶部的星星。</p>
+      <p class="upload-desc">上传一张照片，照片竖立为 3D 攀爬墙，<br>亮的地方凸出形成台阶，控制小人从侧面跳上台阶，<br>一路跳跃到达顶部拿到星星。</p>
       <div class="upload-area" id="uploadArea">
         <svg class="upload-icon" viewBox="0 0 48 48" fill="none">
           <rect x="6" y="6" width="36" height="36" rx="8" stroke="currentColor" stroke-width="2"/>
@@ -75,8 +68,8 @@
     <!-- HUD 底部 -->
     <div class="hud hud-bottom">
       <div class="hud-controls">
-        <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>
-        <span>移动</span>
+        <kbd>A</kbd><kbd>D</kbd>
+        <span>左右移动</span>
         <kbd class="kbd-wide">Space</kbd>
         <span>跳跃</span>
       </div>
@@ -100,6 +93,6 @@
   <!-- Toast -->
   <div id="toast" class="toast hidden"></div>
 
-  <script type="module" src="js/main.js"></script>
+  <script src="js/main.js?v=3.0"></script>
 </body>
 </html>
